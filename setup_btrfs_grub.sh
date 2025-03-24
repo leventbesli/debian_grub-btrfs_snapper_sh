@@ -113,10 +113,9 @@ askInstallGrubBtrfs() {
     printf "%b\n" "${YELLOW}(optional) grub-btrfs installation...${RC}"
     printf "%b\n" "${YELLOW}=====================================${RC}"
     printf "%b\n" "${YELLOW}You can skip installing grub-btrfs and use only Btrfs Assistant GUI or snapper CLI.${RC}"
-    printf "%b\n" "${CYAN}Notice: grub-btrfs may cause problems with booting into snapshots and other OSes on systems with secure boot/tpm. You will be asked to apply mitigation for this issue in next step.${RC}"
 
     while true; do
-        printf "%b" "${YELLOW}Do you want to install grub-btrfs? Press (y) for yes, (n) for no, (f) to apply tpm mitigation to already installed grub-btrfs: ${RC}"
+        printf "%b" "${YELLOW}Do you want to install grub-btrfs? Press (y) for yes, (n) for no: ${RC}"
         read -r response
         case "$response" in
             [yY]*)
@@ -127,12 +126,8 @@ askInstallGrubBtrfs() {
                 printf "%b\n" "${GREEN}Skipping grub-btrfs installation.${RC}"
                 break
                 ;;
-            [fF]*)
-                mitigateTpmError
-                break
-                ;;
             *)
-                printf "%b\n" "${RED}Invalid input. Please enter 'y' for yes, 'n' for no, or (f) to apply tpm mitigation to already installed grub-btrfs.${RC}"
+                printf "%b\n" "${RED}Invalid input. Please enter 'y' for yes, 'n' for no.${RC}"
                 ;;
         esac
     done
@@ -156,38 +151,8 @@ installGrubBtrfs() {
     printf "%b\n" "${GREEN}Grub-btrfs installed and service enabled.${RC}"
     printf "%b\n" "${CYAN}Notice: To perform a system recovery via grub-btrfs, perform a restore operation with Btrfs Assistant GUI after booting into the snapshot.${RC}"
     
-    mitigateTpmError
 }
 
-mitigateTpmError() {
-    printf "%b\n" "${YELLOW}===============================================${RC}"
-    printf "%b\n" "${YELLOW}Mitigation for 'tpm.c:150:unknown TPM error'...${RC}"
-    printf "%b\n" "${YELLOW}===============================================${RC}"
-    printf "%b\n" "${YELLOW}Some systems with secure boot/tpm may encounter 'tpm.c:150:unknown TPM error' when booting into snapshots.${RC}"
-    printf "%b\n" "${YELLOW}If you encounter this issue, you can come back later and apply this mitigation or you can apply it now.${RC}"
-    while true; do
-        printf "%b\n" "${YELLOW}Do you want to apply the TPM error mitigation? (y/n): ${RC}"
-        read -r response
-        case "$response" in
-            [yY]*)
-                printf "%b\n" "${YELLOW}Creating /etc/grub.d/02_tpm file...${RC}"
-                echo '#!/bin/sh' | sudo tee /etc/grub.d/02_tpm > /dev/null
-                echo 'echo "rmmod tpm"' | sudo tee -a /etc/grub.d/02_tpm > /dev/null
-                sudo chmod +x /etc/grub.d/02_tpm
-                sudo grub2-mkconfig -o /boot/grub2/grub.cfg
-                printf "%b\n" "${GREEN}Mitigation applied and grub config updated.${RC}"
-                break
-                ;;
-            [nN]*)
-                printf "%b\n" "${GREEN}Skipping TPM error mitigation.${RC}"
-                break
-                ;;
-            *)
-                printf "%b\n" "${RED}Invalid input. Please enter 'y' for yes or 'n' for no.${RC}"
-                ;;
-        esac
-    done
-}
 
 # Post install information
 someNotices() {
