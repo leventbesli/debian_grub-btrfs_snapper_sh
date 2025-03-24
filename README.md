@@ -5,7 +5,6 @@ This bash script automates the installation and configuration of Btrfs Assistant
 # Features
 - Installs Btrfs-Assistan/Snapper and takes the first root snapshot.
 - Downloads, configures, and installs Grub-Btrfs to display snapshots in the GRUB menu.
-- Offers mitigation for "tpm.c:150:unknown TPM error" grub issue.
 - Configures automatic GRUB configuration updates after each snapshot.
 
 # Prerequisites
