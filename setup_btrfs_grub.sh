@@ -140,22 +140,22 @@ askInstallGrubBtrfs() {
 
 # Install grub-btrfs
 installGrubBtrfs() {
-    # Check if the grub-btrfs dir exists before attempting to clone into it.
     printf "%b\n" "${YELLOW}Downloading grub-btrfs and installing dependencies...${RC}"
-    if [ -d "$HOME/grub-btrfs" ]; then
-        rm -rf "$HOME/grub-btrfs"
-    fi
-    sudo apt install -y make git inotify-tools
-    cd "$HOME" && git clone https://github.com/Antynea/grub-btrfs
+    sudo apt install -y build-essential git vim
+    
+    printf "%b\n" "${YELLOW}Cloning grub-btrfs repository...${RC}"
+    git clone https://github.com/Antynea/grub-btrfs.git
+    
     printf "%b\n" "${YELLOW}Installing grub-btrfs...${RC}"
-    cd "$HOME/grub-btrfs"
+    cd grub-btrfs
     sudo make install
+    
     printf "%b\n" "${YELLOW}Updating grub configuration and enabling grub-btrfsd service...${RC}"
     sudo grub2-mkconfig -o /boot/grub2/grub.cfg && sudo systemctl enable --now grub-btrfsd.service
-    printf "%b\n" "${YELLOW}Cleaning up installation files...${RC}"
-    cd .. && rm -rf "$HOME/grub-btrfs"
+    
     printf "%b\n" "${GREEN}Grub-btrfs installed and service enabled.${RC}"
     printf "%b\n" "${CYAN}Notice: To perform a system recovery via grub-btrfs, perform a restore operation with Btrfs Assistant GUI after booting into the snapshot.${RC}"
+    
     mitigateTpmError
 }
 
