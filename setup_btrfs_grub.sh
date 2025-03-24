@@ -145,7 +145,7 @@ installGrubBtrfs() {
     if [ -d "$HOME/grub-btrfs" ]; then
         rm -rf "$HOME/grub-btrfs"
     fi
-    sudo dnf install -y make git inotify-tools
+    sudo apt install -y make git inotify-tools
     cd "$HOME" && git clone https://github.com/Antynea/grub-btrfs
     printf "%b\n" "${YELLOW}Installing grub-btrfs...${RC}"
     cd "$HOME/grub-btrfs"
