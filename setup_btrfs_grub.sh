@@ -151,7 +151,7 @@ installGrubBtrfs() {
     sudo make install
     
     printf "%b\n" "${YELLOW}Updating grub configuration and enabling grub-btrfsd service...${RC}"
-    sudo grub2-mkconfig -o /boot/grub2/grub.cfg && sudo systemctl enable --now grub-btrfsd.service
+    sudo systemctl enable --now grub-btrfsd.service
     
     printf "%b\n" "${GREEN}Grub-btrfs installed and service enabled.${RC}"
     printf "%b\n" "${CYAN}Notice: To perform a system recovery via grub-btrfs, perform a restore operation with Btrfs Assistant GUI after booting into the snapshot.${RC}"
