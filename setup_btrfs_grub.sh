@@ -141,7 +141,7 @@ askInstallGrubBtrfs() {
 # Install grub-btrfs
 installGrubBtrfs() {
     printf "%b\n" "${YELLOW}Downloading grub-btrfs and installing dependencies...${RC}"
-    sudo apt install -y build-essential git vim
+    sudo apt install -y make git
     
     printf "%b\n" "${YELLOW}Cloning grub-btrfs repository...${RC}"
     git clone https://github.com/Antynea/grub-btrfs.git
