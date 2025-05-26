@@ -56,7 +56,7 @@ installBtrfsStack() {
         printf "%b\n" "${YELLOW}==========================================${RC}"
         
         TMP_DEB="/tmp/btrfs-assistant.deb"
-        wget -O "$TMP_DEB" "https://download.opensuse.org/repositories/home:/iDesmI:/more/Debian_12/amd64/btrfs-assistant_1.8-1+3.10_amd64.deb"
+        wget -O "$TMP_DEB" "http://archive.ubuntu.com/ubuntu/pool/universe/b/btrfs-assistant/btrfs-assistant_2.1.1-1_amd64.deb"
         
         if [ -f "$TMP_DEB" ]; then
             sudo apt install -y "$TMP_DEB"
